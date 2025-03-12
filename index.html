@@ -1,64 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine</title>
-
-    <link rel="stylesheet" href="main.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
-</head>
-<body class="boody">
-    
-    <div class="bear">
-        <img src="assets/img/mocha-bear-hearts.gif">
-    </div>
-    
-    <div>
-        <p class="jua">will you be my valentine</p>
-    </div>
-
-    <div class="buttons">
-        <div class="buttonOne">
-            <button class="realButton juaBold" id="yesButton"><a href="yes.html">YES</a></button>
-        </div>
-
-        <div class="buttonTwo">
-            <button class="realButton juaBold" id="noButton">NO</button>
-        </div>
-    </div>
-    
-    <script>
-
-        let isScaled = false;
-        let isScaledTwo = false;
-
-        document.getElementById('noButton').addEventListener('click', function() {
-            var yesButton = document.getElementById('yesButton');
-            var noButton = document.getElementById('noButton');
-            
-            if (isScaled) {
-                yesButton.style.transform = 'scale(1.5)';
-                noButton.style.transform = 'scale(0.5)';
-
-                isScaledTwo = true;
-            } if (isScaledTwo) {
-                yesButton.style.transform = 'scale(1.75)';
-                noButton.style.transform = 'scale(0)';
-            } else {
-                yesButton.style.transform = 'scale(1.25)';
-                noButton.style.transform = 'scale(0.75)';
-
-                isScaled = true;
-            } 
-            
-        });
-    </script>
-
-</body>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Black Hawks Scouting</title>
+    <meta name="description" content="A scouting app by FRC Team 2834">
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+    <link rel="mask-icon" href="icons/mask-icon.svg" color="#292929">
+    <meta name="theme-color" content="#292929">
+  </head>
+  <body>
+    <noscript>This app uses JavaScript. Please enable it to continue.</noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

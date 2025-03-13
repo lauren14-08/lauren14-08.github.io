@@ -151,16 +151,16 @@ var config_data = `
     }
   ],
   "postmatch": [
+    { "name": "Attained Coopertition Pt",
+       "code": "cop",
+       "type": "bool"
+    },
     { "name": "Algae Left in Reef",
       "code": "alr",
       "type": "number",
       "min": 0,
       "max": 9,
       "defaultValue": 0
-    },
-    { "name": "Attained Coopertition Point",
-      "code": "cop",
-      "type": "bool"
     },
     { "name": "Driver Skill",
       "code": "ds",

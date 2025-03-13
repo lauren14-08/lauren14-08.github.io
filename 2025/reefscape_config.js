@@ -158,6 +158,10 @@ var config_data = `
       "max": 9,
       "defaultValue": 0
     },
+    { "name": "Attained Coopertition Point",
+      "code": "cop",
+      "type": "bool"
+    },
     { "name": "Driver Skill",
       "code": "ds",
       "type": "radio",

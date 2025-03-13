@@ -98,7 +98,7 @@ var config_data = `
       "code": "aps",
       "type": "counter"
     },
-    { "name": "Net Score",
+    { "name": "Barge Score",
       "code": "ans",
       "type": "counter"
     }
@@ -124,7 +124,7 @@ var config_data = `
       "code": "tps",
       "type": "counter"
     },
-    { "name": "Net Score",
+    { "name": "Barge Score",
       "code": "tns",
       "type": "counter"
     },
@@ -163,10 +163,7 @@ var config_data = `
     }
   ],
   "postmatch": [
-    { "name": "Attained Coopertition Pt",
-      "code": "cop",
-      "type": "bool"
-    },
+
     { "name": "Algae Left in Reef",
       "code": "alr",
       "type": "number",

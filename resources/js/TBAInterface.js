@@ -27,7 +27,7 @@ function getTeams(eventCode) {
 /**
  * Get schefule for event
  *
- * @param {eventCode} eventCode the event code (i.e. 2020caln) to pull the team list
+ * @param {2025vaale} eventCode the event code (i.e. 2020caln) to pull the team list
  */
 function getSchedule(eventCode) {
 	if (authKey) {

@@ -231,12 +231,14 @@ li p:hover {
     font-size: 5vw;
     color: rgb(45, 51, 107);
     padding: 6vw 0 0 0;
+    animation: fadeIn 2s 0s;
 }
 .contactDescription {
     text-align: center;
     font-size: 1.3vw;
     color: rgb(45, 51, 107);
     padding: 3vw 30vw 0 30vw;
+    animation: fadeIn 4s 0s;
 }
 .contactInfo {
     display: flex;
@@ -246,10 +248,17 @@ li p:hover {
     color: rgb(45, 51, 107);
     padding: 3vw 30vw 0 30vw;
     gap: 2vw;
+    animation: fadeIn 4s 0s;
+
 }
 .envelope {
     fill:rgb(45, 51, 107);
     height: 1.5vw;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    30% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 /*-- animation keyframes --*/

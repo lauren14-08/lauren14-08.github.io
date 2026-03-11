@@ -1,4 +1,4 @@
-var config_data = `
+const config_data = `
 {
   "dataFormat": "tsv",
   "title": "Scouting PASS 2025",

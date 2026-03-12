@@ -74,6 +74,26 @@ const config_data = `
       "code": "ac1",
       "type": "counter"
     },
+    { "name": "Amount of fuel scored at one",
+      "code": "ac1a",
+      "type": "radio",
+      "choices": {
+        "1": "Little<br>",
+        "2": "Mid<br>",
+        "3": "A lot"
+      },
+      "defaultValue": "x"
+    },
+    { "name": "Consistency",
+      "code": "ac1l",
+      "type": "radio",
+      "choices": {
+        "n": "Not consistent<br>",
+        "s": "Somewhat consistent<br>",
+        "c": "Very consistent<br>"
+      },
+      "defaultValue": "x"
+    },
     { "name": "Passes",
       "code": "ac2",
       "type": "counter"
@@ -94,11 +114,9 @@ const config_data = `
       "code": "ans",
       "type": "bool"
     },
-    { "name": "Climb (Write Lvl 1, 2, 3 / failed climb)",
+    { "name": "Climb",
       "code": "afl",
-      "type": "text",
-      "size": 10,
-      "maxSize": 100
+      "type": "bool"
     }
   ],
   "teleop": [
@@ -116,11 +134,24 @@ const config_data = `
     },
     { "name": "Human Player",
       "code": "tc4",
-      "type": "counter"
+      "type": "bool"
+    },
+    { "name": "Can go under trench",
+      "code": "tc5",
+      "type": "bool"
+    },
+    { "name": "Type of projectile",
+      "code": "tc6",
+      "type": "radio",
+      "choices": {
+        "b": "Fixed hood<br>",
+        "d": "Turrret"
+      },
+      "defaultValue": "x"
     }
   ],
   "endgame": [
-    { "name": "Barge Timer",
+    { "name": "Climb Timer",
       "code": "ebt",
       "type": "timer"
     },
@@ -162,17 +193,15 @@ const config_data = `
       },
       "defaultValue": "x"
     },
-    { "name": "Defense Rating",
+    { "name": "Did they play defense",
       "code": "dr",
-      "type": "radio",
-      "choices": {
-        "b": "Below Average<br>",
-        "a": "Average<br>",
-        "g": "Good<br>",
-        "e": "Excellent<br>",
-        "x": "Did not play defense"
-      },
-      "defaultValue": "x"
+      "type": "bool"
+    },
+    { "name": "Defense Effectiveness",
+      "code": "de",
+      "type": "text",
+      "size": 15,
+      "maxSize": 100
     },
     { "name": "Speed Rating",
       "code": "sr",
@@ -194,10 +223,6 @@ const config_data = `
       "code": "tip",
       "type": "bool"
     },
-    { "name": "Dropped Fuel (>2)",
-      "code": "dc",
-      "type": "bool"
-    },
     { "name": "Missed Fuel a Lot",
       "code": "da",
       "type": "bool"
@@ -207,7 +232,29 @@ const config_data = `
       "code": "all",
       "type": "bool"
     },
-    { "name": "Comments",
+    { "name": "Ball Storage",
+      "code": "bs",
+      "type": "radio",
+      "choices": {
+        "n": "None<br>",
+        "s": "Small (1-5)<br>",
+        "m": "Medium (6-15)<br>",
+        "l": "Large (16+)"
+      },
+      "defaultValue": "x"
+    },
+    { "name": "Efficiency of Fuel Scoring",
+      "code": "ct",
+      "type": "radio",
+      "choices": {
+        "n": "Bad<br>",
+        "s": "Mid<br>",
+        "m": "Good<br>",
+        "l": "Great"
+      },
+      "defaultValue": "x"
+    },
+    { "name": "Comments *MANDATORY!*",
       "code": "co",
       "type": "text",
       "size": 15,

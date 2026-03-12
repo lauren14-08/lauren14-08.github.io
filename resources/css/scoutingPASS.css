@@ -139,7 +139,7 @@ h2{
     margin: 1vw;
     height: 100%;
     font: roboto;
-}
+}   
 
 .half-button-r{
     flex-grow: 1;
@@ -156,14 +156,14 @@ h2{
 #nextButton1, #nextButton2, #nextButton9, #nextButton10, .clearForm, .submitForm, #displayButton, #copyButton {
     font-family: Alexis;
     padding: 10px;
-    background-color: rgb(151, 199, 240);
+    background-color: rgb(255, 0, 195);
     text-decoration: none;
     display: inline-block;
 }
 
 #nextButton3, #nextButton4, #nextButton5, #nextButton6, #nextButton7, #nextButton8 {
     font-family: Alexis;
-    background-color: black;
+    background-color: rgb(255, 0, 195);
     padding: 10px;
     color: white;
 }
@@ -178,13 +178,13 @@ h2{
 
 #prevButton7, #prevButton8, #prevButton9{
     font-family: Alexis;
-    background-color: rgb(151, 199, 240);
+    background-color: rgb(255, 0, 195);
     padding: 10px;
 }
 
 #prevButton1, #prevButton2, #prevButton3, #prevButton4, #prevButton5, #prevButton6{
     font-family: Alexis;
-    background-color: black;
+    background-color: rgb(255, 0, 195);
     padding: 10px;
     color: white;
 

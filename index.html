@@ -424,6 +424,8 @@ html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',san
 
   overflow:hidden; font-size:20px; font-weight:600;
 
+  color: white;
+
 }
 
 .artist-info { flex:1; min-width:0; }
@@ -629,7 +631,7 @@ audio,#fi { display:none; }
   <div class="bc-btn">‹</div>
   <div class="bc-btn">›</div>
   <div class="bc-aa">AA</div>
-  <div class="bc-url"><span style="font-size:10px;opacity:.55">🔒</span> DVDMusicVault.com</div>
+  <div class="bc-url"><span style="font-size:10px;opacity:.55"></span>lauren14-08.github.io</div>
   <div class="bc-btn" id="openAdd">+</div>
   <div class="bc-btn">↑</div>
   <div class="bc-btn">⊡</div>
@@ -637,9 +639,9 @@ audio,#fi { display:none; }
 
 <!-- Sidebar -->
 <div class="sidebar">
-  <div class="sb-btn" id="openAdd2">✏️</div>
+  <div class="sb-btn" id="openAdd2">✎</div>
   <div class="sb-btn">♡</div>
-  <div class="sb-btn" id="deleteBtn" title="Delete current disc">🗑️</div>
+  <div class="sb-btn" id="deleteBtn" title="Delete current disc">🗑</div>
 </div>
 
 <!-- Carousel -->
@@ -678,7 +680,7 @@ audio,#fi { display:none; }
 <!-- Artist bar -->
 <div class="artist-bar">
   <div class="av-nav" onclick="nav(-1)">‹</div>
-  <div class="avatar" id="avImg">🎵</div>
+  <div class="avatar" id="avImg">♫</div>
   <div class="artist-info">
     <div class="a-name" id="avName">No disc selected</div>
     <div class="a-sub" id="avSub">Upload a song to begin</div>
@@ -831,7 +833,7 @@ function renderFeatured() {
     document.getElementById('fMeta').textContent='Upload any audio file — MP3, AAC, FLAC, WAV';
     document.getElementById('avName').textContent='No disc selected';
     document.getElementById('avSub').textContent='Upload a song to begin';
-    document.getElementById('avImg').textContent='🎵';
+    document.getElementById('avImg').textContent='♫';
     document.getElementById('avImg').style.cssText='';
     document.getElementById('pbFill').style.width='0%';
     document.getElementById('tCur').textContent='0:00';
@@ -947,7 +949,7 @@ function load(f){
   document.getElementById('iTitle').value=n.slice(0,40);
   document.getElementById('iArtist').value='';
   document.getElementById('iQuote').value='';
-  dz.querySelector('.dz-icon').textContent='🎵';
+  dz.querySelector('.dz-icon').textContent='♫';
   dz.querySelector('.dz-text').textContent=f.name.slice(0,42);
 }
 

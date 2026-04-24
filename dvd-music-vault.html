@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DVD Music Vault</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+
+:root {
+
+  --glass-bg: rgba(255,255,255,0.12);
+
+  --glass-border: rgba(255,255,255,0.25);
+
+  --glass-blur: blur(28px) saturate(180%);
+
+  --text-primary: rgba(255,255,255,0.95);
+
+  --text-secondary: rgba(255,255,255,0.6);
+
+  --text-tertiary: rgba(255,255,255,0.38);
+
+}
+
+
+
+html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',sans-serif; }
+
+
+
+/* ── MUSEUM ROOM ── */
+
+.room { position:fixed; inset:0; overflow:hidden; }
+
+
+
+.room-bg {
+
+  position:absolute; inset:0;
+
+  background: linear-gradient(180deg,
+
+    #8a7b6e 0%, #9e8f82 10%, #b5a898 18%, #c2b5a8 100%
+
+  );
+
+}
+
+
+
+/* Floor */
+
+.floor {
+
+  position:absolute; bottom:0; left:0; right:0; height:28%;
+
+  background: linear-gradient(180deg, #a89880 0%, #96866e 60%, #8a7a64 100%);
+
+}
+
+
+
+/* Back wall center panel */
+
+.back-wall {
+
+  position:absolute; top:10%; left:18%; right:18%; bottom:28%;
+
+  background: linear-gradient(180deg,#cfc0b0 0%,#d8c9b8 40%,#c8b9a8 100%);
+
+}
+
+
+
+/* Ceiling beam */
+
+.beam {
+
+  position:absolute; top:0; left:50%; transform:translateX(-50%);
+
+  width:90px; height:12%;
+
+  background: linear-gradient(90deg,#786860,#9a8a7a,#7a6858);
+
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+
+}
+
+
+
+/* Spotlight */
+
+.spotlight {
+
+  position:absolute; top:12%; left:50%; transform:translateX(-50%);
+
+  width:500px; height:350px;
+
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,248,220,0.22) 0%, transparent 65%);
+
+  pointer-events:none;
+
+}
+
+
+
+/* Side walls */
+
+.wall-l { position:absolute; top:0; left:0; bottom:0; width:20%; background:linear-gradient(90deg,#786858,#a09080); }
+
+.wall-r { position:absolute; top:0; right:0; bottom:0; width:20%; background:linear-gradient(270deg,#786858,#a09080); }
+
+
+
+/* Wall art frames */
+
+.art-frame {
+
+  position:absolute; border:3px solid #8a6838; border-radius:2px;
+
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45), inset 0 0 20px rgba(0,0,0,0.12);
+
+}
+
+.af1 { top:20%; left:0.5%; width:10%; height:20%; background:linear-gradient(135deg,#c8d878,#e8f0b0,#a8b048); }
+
+.af2 { top:17%; left:11%; width:7%; height:24%; background:linear-gradient(135deg,#d8a848,#f0c878,#c08830); }
+
+.af3 { top:19%; right:0.5%; width:10%; height:22%; background:linear-gradient(135deg,#78a8c8,#a0d0e8,#4888b0); }
+
+.af4 { top:17%; right:11%; width:7%; height:26%; background:linear-gradient(135deg,#a878c8,#c8a0e8,#8050b0); }
+
+
+
+/* ── BROWSER CHROME ── */
+
+.browser-bar {
+
+  position:absolute; top:16px; left:50%; transform:translateX(-50%);
+
+  width:660px; height:42px;
+
+  background:rgba(255,255,255,0.16); backdrop-filter:var(--glass-blur);
+
+  border:1px solid rgba(255,255,255,0.28); border-radius:14px;
+
+  display:flex; align-items:center; padding:0 12px; gap:8px;
+
+  box-shadow:0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.28);
+
+  z-index:100;
+
+}
+
+.bc-btn, .bc-aa {
+
+  height:28px; border-radius:9px;
+
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+
+  display:flex; align-items:center; justify-content:center;
+
+  cursor:pointer; color:var(--text-secondary); transition:background 0.15s;
+
+}
+
+.bc-btn { width:28px; font-size:12px; }
+
+.bc-aa { padding:0 8px; font-size:12px; color:rgba(255,255,255,0.7); }
+
+.bc-btn:hover, .bc-aa:hover { background:rgba(255,255,255,0.22); color:white; }
+
+.bc-url {
+
+  flex:1; height:28px;
+
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
+
+  border-radius:9px; display:flex; align-items:center; justify-content:center; gap:5px;
+
+  color:var(--text-secondary); font-size:13px; user-select: none;
+
+}
+
+
+
+/* ── SIDEBAR TOOLS ── */
+
+.sidebar {
+
+  position:absolute; left:calc(50% - 368px); top:50%; transform:translateY(-50%);
+
+  display:flex; flex-direction:column; gap:9px; z-index:100;
+
+}
+
+.sb-btn {
+
+  width:36px; height:36px; border-radius:12px;
+
+  background:rgba(255,255,255,0.14); backdrop-filter:var(--glass-blur);
+
+  border:1px solid rgba(255,255,255,0.22);
+
+  display:flex; align-items:center; justify-content:center;
+
+  cursor:pointer; font-size:15px; color:var(--text-secondary);
+
+  box-shadow:0 4px 16px rgba(0,0,0,0.15); transition:all 0.2s;
+
+}
+
+.sb-btn:hover { background:rgba(255,255,255,0.24); transform:scale(1.06); color:white; }
+
+
+
+/* ── CAROUSEL ── */
+
+.carousel-root {
+
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+
+  width:820px; perspective:1400px; z-index:50;
+
+}
+
+.carousel-stage {
+
+  position:relative; height:500px;
+
+  display:flex; align-items:center; justify-content:center;
+
+}
+
+
+
+/* Side cards */
+
+.s-card {
+
+  position:absolute; width:200px; height:275px;
+
+  border-radius:18px; overflow:hidden; cursor:pointer;
+
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+
+}
+
+.s-card canvas { width:100%; height:100%; display:block; }
+
+.s-card.lft { left:16px; transform:rotateY(26deg) scale(0.8) translateX(-24px); filter:brightness(0.72) blur(0.4px); z-index:1; }
+
+.s-card.lft:hover { transform:rotateY(20deg) scale(0.84) translateX(-12px); filter:brightness(0.84); }
+
+.s-card.rgt { right:16px; transform:rotateY(-26deg) scale(0.8) translateX(24px); filter:brightness(0.72) blur(0.4px); z-index:1; }
+
+.s-card.rgt:hover { transform:rotateY(-20deg) scale(0.84) translateX(12px); filter:brightness(0.84); }
+
+
+
+/* Featured card */
+
+.f-card {
+
+  position:relative; width:360px;
+
+  background:rgba(28,26,38,0.7); backdrop-filter:blur(34px) saturate(200%);
+
+  border:1px solid rgba(255,255,255,0.2); border-radius:22px; overflow:hidden;
+
+  box-shadow:0 40px 100px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.18);
+
+  z-index:10;
+
+}
+
+
+
+.f-art { width:100%; height:218px; position:relative; overflow:hidden; }
+
+.f-art canvas { display:block; width:100%; height:100%; }
+
+
+
+.f-art-actions {
+
+  position:absolute; top:11px; left:11px; right:11px;
+
+  display:flex; align-items:center; justify-content:space-between; z-index:5;
+
+}
+
+.a-btn {
+
+  width:30px; height:30px;
+
+  background:rgba(0,0,0,0.32); backdrop-filter:blur(14px);
+
+  border:1px solid rgba(255,255,255,0.18); border-radius:50%;
+
+  display:flex; align-items:center; justify-content:center;
+
+  cursor:pointer; color:white; font-size:11px; transition:all 0.2s;
+
+}
+
+.a-btn:hover { background:rgba(0,0,0,0.52); transform:scale(1.08); }
+
+
+
+.f-body { padding:17px 19px 19px; }
+
+.f-title-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:7px; }
+
+.f-song-name { font-size:17px; font-weight:500; color:var(--text-primary); letter-spacing:-0.3px; }
+
+.f-date { font-size:12px; color:var(--text-tertiary); font-weight:300; padding-top:3px; }
+
+.f-quote {
+
+  font-family:'Playfair Display',serif; font-style:italic;
+
+  font-size:13.5px; line-height:1.55; color:var(--text-primary); opacity:0.88; margin-bottom:9px;
+
+}
+
+.f-meta { font-size:11.5px; color:var(--text-tertiary); line-height:1.65; font-weight:300; margin-bottom:12px; }
+
+
+
+/* Playback */
+
+.pb-wrap { display:flex; flex-direction:column; gap:7px; }
+
+.pb-track {
+
+  width:100%; height:3px; background:rgba(255,255,255,0.14);
+
+  border-radius:2px; cursor:pointer; position:relative; overflow:visible;
+
+}
+
+.pb-fill {
+
+  height:100%; background:rgba(255,255,255,0.68); border-radius:2px;
+
+  width:0%; transition:width 0.1s linear; position:relative;
+
+}
+
+.pb-fill::after {
+
+  content:''; position:absolute; right:-4px; top:-4px;
+
+  width:10px; height:10px; background:white; border-radius:50%;
+
+  box-shadow:0 0 6px rgba(0,0,0,0.3); opacity:0; transition:opacity 0.15s;
+
+}
+
+.pb-track:hover .pb-fill::after { opacity:1; }
+
+.pb-times { display:flex; justify-content:space-between; font-size:11px; color:var(--text-tertiary); }
+
+
+
+/* ── ARTIST BAR ── */
+
+.artist-bar {
+
+  position:absolute; bottom:56px; left:50%; transform:translateX(-50%);
+
+  width:390px; height:64px;
+
+  background:rgba(255,255,255,0.14); backdrop-filter:var(--glass-blur);
+
+  border:1px solid rgba(255,255,255,0.24); border-radius:32px;
+
+  display:flex; align-items:center; padding:8px 12px; gap:10px;
+
+  box-shadow:0 12px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.24);
+
+  z-index:100;
+
+}
+
+.av-nav {
+
+  width:28px; height:28px; border-radius:50%;
+
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+
+  display:flex; align-items:center; justify-content:center;
+
+  cursor:pointer; color:var(--text-secondary); font-size:11px;
+
+  transition:all 0.2s; flex-shrink:0;
+
+}
+
+.av-nav:hover { background:rgba(255,255,255,0.22); }
+
+.avatar {
+
+  width:46px; height:46px; border-radius:50%; flex-shrink:0;
+
+  border:2px solid rgba(255,255,255,0.28);
+
+  display:flex; align-items:center; justify-content:center;
+
+  overflow:hidden; font-size:20px; font-weight:600;
+
+}
+
+.artist-info { flex:1; min-width:0; }
+
+.a-name { font-size:14px; font-weight:500; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.a-sub { font-size:11px; color:var(--text-tertiary); margin-top:2px; }
+
+.play-btn {
+
+  width:30px; height:30px; border-radius:50%;
+
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+
+  display:flex; align-items:center; justify-content:center;
+
+  cursor:pointer; color:var(--text-secondary); font-size:13px;
+
+  transition:all 0.2s; flex-shrink:0;
+
+}
+
+.play-btn:hover { background:rgba(255,255,255,0.24); color:white; }
+
+
+
+/* Dots */
+
+.dots {
+
+  position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+
+  display:flex; gap:5px; z-index:100;
+
+}
+
+.dot {
+
+  width:6px; height:6px; border-radius:3px;
+
+  background:rgba(255,255,255,0.28); cursor:pointer; transition:all 0.3s;
+
+}
+
+.dot.on { width:18px; background:rgba(255,255,255,0.72); }
+
+
+
+/* ── ADD PANEL ── */
+
+.add-overlay {
+
+  position:fixed; inset:0; background:rgba(0,0,0,0.52); backdrop-filter:blur(5px);
+
+  z-index:200; display:flex; align-items:center; justify-content:center;
+
+  opacity:0; pointer-events:none; transition:opacity 0.3s;
+
+}
+
+.add-overlay.open { opacity:1; pointer-events:all; }
+
+.add-panel {
+
+  width:430px; background:rgba(26,24,36,0.9); backdrop-filter:blur(40px) saturate(200%);
+
+  border:1px solid rgba(255,255,255,0.16); border-radius:24px; padding:28px;
+
+  box-shadow:0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+
+  transform:translateY(18px) scale(0.97); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+
+}
+
+.add-overlay.open .add-panel { transform:translateY(0) scale(1); }
+
+.ap-head { display:flex; justify-content:space-between; align-items:center; font-size:17px; font-weight:500; color:var(--text-primary); margin-bottom:20px; }
+
+.ap-close {
+
+  width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
+
+  display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary); font-size:12px; transition:background 0.15s;
+
+}
+
+.ap-close:hover { background:rgba(255,255,255,0.18); }
+
+.dz {
+
+  border:1.5px dashed rgba(255,255,255,0.2); border-radius:14px; padding:32px; text-align:center; cursor:pointer;
+
+  background:rgba(255,255,255,0.04); transition:all 0.2s; margin-bottom:16px;
+
+}
+
+.dz:hover,.dz.over { border-color:rgba(255,255,255,0.42); background:rgba(255,255,255,0.08); }
+
+.dz-icon { font-size:34px; display:block; margin-bottom:9px; }
+
+.dz-text { font-size:14px; color:var(--text-secondary); }
+
+.dz-sub { font-size:11.5px; color:var(--text-tertiary); margin-top:3px; }
+
+.fg { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:13px; }
+
+.fw { display:flex; flex-direction:column; gap:4px; margin-bottom:13px; }
+
+.fl { font-size:11px; font-weight:500; color:var(--text-tertiary); letter-spacing:0.5px; text-transform:uppercase; }
+
+.fi {
+
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.11); border-radius:10px; padding:10px 12px; color:var(--text-primary);
+
+  font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s, background 0.2s;
+
+}
+
+.fi:focus { border-color:rgba(255,255,255,0.32); background:rgba(255,255,255,0.09); }
+
+.fi::placeholder { color:var(--text-tertiary); }
+
+.clr-pick { display:flex; gap:7px; margin-bottom:18px; }
+
+.cp {
+
+  width:24px; height:24px; border-radius:50%; cursor:pointer;
+
+  border:2px solid transparent; transition:transform 0.15s, border-color 0.15s;
+
+}
+
+.cp:hover { transform:scale(1.18); }
+
+.cp.on { border-color:white; transform:scale(1.18); }
+
+.burn-btn {
+
+  width:100%; padding:13px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:13px;
+
+  color:var(--text-primary); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s;
+
+}
+
+.burn-btn:hover { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.32); }
+
+
+
+/* Burning & Toast */
+
+.burning-ov {
+
+  position:fixed; inset:0; background:rgba(0,0,0,0.68); backdrop-filter:blur(8px);
+
+  z-index:300; display:none; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+
+}
+
+.burning-ov.on { display:flex; }
+
+.burn-disc {
+
+  width:96px; height:96px; border-radius:50%; background:conic-gradient(from 0deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#a55faf,#ff6b6b);
+
+  animation:spin 0.7s linear infinite; position:relative; box-shadow:0 0 50px rgba(255,255,255,0.25);
+
+}
+.burn-disc::after { content:''; position:absolute; inset:16px; background:rgba(8,8,18,0.92); border-radius:50%; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.burn-txt { color:rgba(255,255,255,0.8); font-size:13px; letter-spacing:2px; text-transform:uppercase; }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:22px; left:50%;
+  transform:translateX(-50%) translateY(70px);
+  background:rgba(26,24,36,0.92); backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.14); border-radius:20px;
+  padding:11px 20px; color:var(--text-primary); font-size:13px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3); z-index:400;
+  opacity:0; transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.on { transform:translateX(-50%) translateY(0); opacity:1; }
+
+audio,#fi { display:none; }
+</style>
+</head>
+<body>
+
+<!-- Room -->
+<div class="room">
+  <div class="room-bg"></div>
+  <div class="floor"></div>
+  <div class="back-wall"></div>
+  <div class="beam"></div>
+  <div class="spotlight"></div>
+  <div class="wall-l"></div>
+  <div class="wall-r"></div>
+</div>
+
+<!-- Browser -->
+<div class="browser-bar">
+  <div class="bc-btn">⊞</div>
+  <div class="bc-btn">‹</div>
+  <div class="bc-btn">›</div>
+  <div class="bc-aa">AA</div>
+  <div class="bc-url"><span style="font-size:10px;opacity:.55">🔒</span> DVDMusicVault.com</div>
+  <div class="bc-btn" id="openAdd">+</div>
+  <div class="bc-btn">↑</div>
+  <div class="bc-btn">⊡</div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sb-btn" id="openAdd2">✏️</div>
+  <div class="sb-btn">♡</div>
+  <div class="sb-btn" id="deleteBtn" title="Delete current disc">🗑️</div>
+</div>
+
+<!-- Carousel -->
+<div class="carousel-root">
+  <div class="carousel-stage">
+    <div class="s-card lft" id="sLeft" onclick="nav(-1)"><canvas id="cLeft" width="200" height="275"></canvas></div>
+    <div class="f-card" id="fCard">
+      <div class="f-art">
+        <canvas id="cMain" width="360" height="218"></canvas>
+        <div class="f-art-actions">
+          <div class="a-btn" onclick="nav(-1)">‹</div>
+          <div class="a-btn" id="moreBtn">···</div>
+        </div>
+      </div>
+      <div class="f-body">
+        <div class="f-title-row">
+          <div class="f-song-name" id="fTitle">Add your first disc</div>
+          <div class="f-date" id="fDate"></div>
+        </div>
+        <div class="f-quote" id="fQuote">Click + to save your favorite songs as virtual DVDs</div>
+        <div class="f-meta" id="fMeta">Upload any audio file — MP3, AAC, FLAC, WAV</div>
+        <div class="pb-wrap">
+          <div class="pb-track" id="pbTrack">
+            <div class="pb-fill" id="pbFill"></div>
+          </div>
+          <div class="pb-times">
+            <span id="tCur">0:00</span><span id="tDur">0:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-card rgt" id="sRight" onclick="nav(1)"><canvas id="cRight" width="200" height="275"></canvas></div>
+  </div>
+</div>
+
+<!-- Artist bar -->
+<div class="artist-bar">
+  <div class="av-nav" onclick="nav(-1)">‹</div>
+  <div class="avatar" id="avImg">🎵</div>
+  <div class="artist-info">
+    <div class="a-name" id="avName">No disc selected</div>
+    <div class="a-sub" id="avSub">Upload a song to begin</div>
+  </div>
+  <div class="play-btn" id="playBtn" onclick="togglePlay()">▶</div>
+  <div class="av-nav" onclick="nav(1)">›</div>
+</div>
+
+<!-- Dots -->
+<div class="dots" id="dots"></div>
+
+<!-- Add overlay -->
+<div class="add-overlay" id="addOv">
+  <div class="add-panel">
+    <div class="ap-head">Add New Disc <div class="ap-close" id="closeAdd">✕</div></div>
+    <div class="dz" id="dz">
+      <span class="dz-icon">💿</span>
+      <div class="dz-text">Drop audio file here</div>
+      <div class="dz-sub">or click to browse · MP3 AAC FLAC WAV</div>
+    </div>
+    <input type="file" id="fi" accept="audio/*">
+    <div class="fg">
+      <div class="fw"><label class="fl">Title</label><input class="fi" id="iTitle" placeholder="Song title" maxlength="40"></div>
+      <div class="fw"><label class="fl">Artist</label><input class="fi" id="iArtist" placeholder="Artist name" maxlength="30"></div>
+    </div>
+    <div class="fw"><label class="fl">Personal note</label><input class="fi" id="iQuote" placeholder="What does this song mean to you?" maxlength="100"></div>
+    <div class="clr-pick" id="clrPick"></div>
+    <button class="burn-btn" id="burnBtn">Burn to Disc</button>
+  </div>
+</div>
+
+<!-- Burning -->
+<div class="burning-ov" id="burnOv">
+  <div class="burn-disc"></div>
+  <div class="burn-txt">Burning disc…</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<audio id="aud"></audio>
+
+<script>
+const PALETTES = [
+  { dot:'#4d96ff', colors:['#0a1628','#0e2246','#1a3a6a','#3a7aea','#6aaaff'] },
+  { dot:'#ff6b9d', colors:['#280a1a','#461030','#6a1a3a','#aa2a5a','#ff6b9d'] },
+  { dot:'#6bcb77', colors:['#0a2810','#123820','#1a5a28','#2aaa3a','#6bcb77'] },
+  { dot:'#ffd93d', colors:['#28200a','#3c3010','#6a501a','#aa802a','#ffd93d'] },
+  { dot:'#a55faf', colors:['#180828','#2a1040','#3a186a','#6a2eaa','#a55faf'] },
+  { dot:'#ff6b6b', colors:['#280a0a','#461010','#6a1a1a','#aa2a2a','#ff6b6b'] },
+  { dot:'#4ecdc4', colors:['#0a2828','#103838','#1a6a6a','#2aaaaa','#4ecdc4'] },
+  { dot:'#fff', colors:['#ff4040','#ffaa00','#40ff80','#4040ff','#ff40cc'] },
+];
+
+let coll = [];
+let idx = 0, playing = false, pendingFile = null, selColor = 0;
+const aud = document.getElementById('aud');
+let db; // Variable for our new database
+
+// ── COLOR PICKER INIT ──
+const clrPick = document.getElementById('clrPick');
+PALETTES.forEach((p,i) => {
+  const d = document.createElement('div');
+  d.className = 'cp'+(i===0?' on':'');
+  d.style.background = p.dot;
+  d.onclick = () => { document.querySelectorAll('.cp').forEach(x=>x.classList.remove('on')); d.classList.add('on'); selColor=i; };
+  clrPick.appendChild(d);
+});
+
+// ── BACKGROUND IMAGES ──
+const BG_IMAGES = [
+  'image_bfcfe2.png',
+  'image_bfcd3e.png',
+  'image_bfcd3c.png',
+  'image_bfcd39.png',
+  'image_bfcd36.png',
+  'image_bfccfe.png',
+  'image_bfccdd.png'
+];
+
+// ── CANVAS ART ──
+function drawArt(canvas, palIdx, title, w, h) {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = w; 
+  canvas.height = h;
+
+  // Predictable random index based on the song title
+  const safeTitle = String(title || 'empty');
+  const seed = safeTitle.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const imgIndex = seed % BG_IMAGES.length;
+
+  // Set a dark base while the image loads
+  ctx.fillStyle = '#1c1a26';
+  ctx.fillRect(0, 0, w, h);
+
+  // Load and draw the image
+  const img = new Image();
+  img.src = BG_IMAGES[imgIndex];
+  
+  img.onload = () => {
+    // Calculate sizing to act like "object-fit: cover"
+    const scale = Math.max(w / img.width, h / img.height);
+    const x = (w / 2) - (img.width / 2) * scale;
+    const y = (h / 2) - (img.height / 2) * scale;
+    
+    // Draw the image onto the canvas
+    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+    // Redraw the text band over the image
+    drawTextBand(ctx, safeTitle, w, h);
+  };
+
+  // Draw the text band immediately in case the image takes a moment to load
+  drawTextBand(ctx, safeTitle, w, h);
+}
+
+// Helper function for the text band
+function drawTextBand(ctx, safeTitle, w, h) {
+  if (safeTitle && safeTitle !== 'Add your first disc') {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; 
+    ctx.fillRect(0, h - 44, w, 44);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    ctx.font = `500 12px 'DM Sans', sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText(safeTitle.slice(0, 34).toUpperCase(), 13, h - 16);
+  }
+}
+
+// ── RENDER ──
+function render() {
+  renderDots(); renderFeatured(); renderSides();
+}
+
+function renderDots() {
+  const el = document.getElementById('dots'); el.innerHTML='';
+  const n = Math.max(coll.length,1);
+  for (let i=0;i<n;i++) {
+    const d=document.createElement('div');
+    d.className='dot'+(i===idx?' on':'');
+    d.onclick=()=>{idx=i;render();};
+    el.appendChild(d);
+  }
+}
+
+function renderFeatured() {
+  if (!coll.length) {
+    drawArt(document.getElementById('cMain'),0,'Add your first disc',360,218);
+    document.getElementById('fTitle').textContent='Add your first disc';
+    document.getElementById('fDate').textContent='';
+    document.getElementById('fQuote').textContent='Click + to save your favorite songs as virtual DVDs';
+    document.getElementById('fMeta').textContent='Upload any audio file — MP3, AAC, FLAC, WAV';
+    document.getElementById('avName').textContent='No disc selected';
+    document.getElementById('avSub').textContent='Upload a song to begin';
+    document.getElementById('avImg').textContent='🎵';
+    document.getElementById('avImg').style.cssText='';
+    document.getElementById('pbFill').style.width='0%';
+    document.getElementById('tCur').textContent='0:00';
+    document.getElementById('tDur').textContent='0:00';
+    return;
+  }
+  const d=coll[idx], pal=PALETTES[d.colorIndex||0];
+  drawArt(document.getElementById('cMain'),d.colorIndex||0,d.title,360,218);
+  document.getElementById('fTitle').textContent=d.title;
+  document.getElementById('fDate').textContent=d.added||'';
+  document.getElementById('fQuote').textContent=d.quote||'"A song is a snapshot of a feeling."';
+  document.getElementById('fMeta').textContent='Artist: '+d.artist;
+  document.getElementById('avName').textContent=d.artist;
+  document.getElementById('avSub').textContent=d.added||'Recently added';
+  const av=document.getElementById('avImg');
+  av.textContent=d.artist.charAt(0).toUpperCase();
+  av.style.background=pal.dot+'33'; av.style.color=pal.dot;
+  av.style.fontSize='22px'; av.style.fontWeight='600';
+  if (aud.dataset.id!==String(d.id)) {
+    aud.src=d.data; aud.dataset.id=d.id;
+    playing=false; document.getElementById('playBtn').textContent='▶';
+    document.getElementById('pbFill').style.width='0%';
+    document.getElementById('tCur').textContent='0:00';
+    document.getElementById('tDur').textContent='0:00';
+  }
+}
+
+function renderSides() {
+  const lEl=document.getElementById('sLeft'), rEl=document.getElementById('sRight');
+  const lI=idx-1, rI=idx+1;
+  if (lI>=0&&coll[lI]) { lEl.style.display='block'; drawArt(document.getElementById('cLeft'),coll[lI].colorIndex||0,coll[lI].title,200,275); }
+  else lEl.style.display='none';
+  if (rI<coll.length) { rEl.style.display='block'; drawArt(document.getElementById('cRight'),coll[rI].colorIndex||0,coll[rI].title,200,275); }
+  else rEl.style.display='none';
+}
+
+function nav(d) {
+  const ni=idx+d;
+  if (ni<0||ni>=coll.length) return;
+  idx=ni; if (playing){aud.pause();playing=false;document.getElementById('playBtn').textContent='▶';} render();
+}
+
+// ── AUDIO ──
+function togglePlay() {
+  if (!coll.length) return;
+  if (playing) { aud.pause(); playing=false; document.getElementById('playBtn').textContent='▶'; }
+  else { aud.play(); playing=true; document.getElementById('playBtn').textContent='⏸'; }
+}
+
+aud.addEventListener('timeupdate',()=>{
+  const p=aud.duration?(aud.currentTime/aud.duration)*100:0;
+  document.getElementById('pbFill').style.width=p+'%';
+  document.getElementById('tCur').textContent=fmt(aud.currentTime);
+});
+aud.addEventListener('loadedmetadata',()=>document.getElementById('tDur').textContent=fmt(aud.duration));
+aud.addEventListener('ended',()=>{
+  playing=false; document.getElementById('playBtn').textContent='▶';
+  if (idx<coll.length-1){nav(1);setTimeout(()=>{aud.play();playing=true;document.getElementById('playBtn').textContent='⏸';},200);}
+});
+
+document.getElementById('pbTrack').onclick=e=>{
+  if(!aud.duration)return;
+  const r=e.currentTarget.getBoundingClientRect();
+  aud.currentTime=((e.clientX-r.left)/r.width)*aud.duration;
+};
+
+function fmt(s){ if(!s||isNaN(s))return'0:00'; return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); }
+
+// ── DELETE (long press more btn) ──
+let delTimer;
+const moreBtn = document.getElementById('moreBtn');
+moreBtn.addEventListener('pointerdown',()=>{ delTimer=setTimeout(()=>{ if(!coll.length)return; if(confirm('Remove "'+coll[idx].title+'" from collection?')){ if(playing){aud.pause();playing=false;} coll.splice(idx,1); idx=Math.max(0,idx-1); save(); render(); showToast('Disc removed'); } },700); });
+moreBtn.addEventListener('pointerup',()=>clearTimeout(delTimer));
+
+// ── TRASH CAN DELETE ──
+document.getElementById('deleteBtn').addEventListener('click', () => {
+  if (!coll.length) {
+    showToast('No disc to delete!');
+    return;
+  }
+  if (confirm('Remove "' + coll[idx].title + '" from collection?')) {
+    if (playing) { 
+      aud.pause(); 
+      playing = false; 
+      document.getElementById('playBtn').textContent = '▶'; 
+    }
+    const deletedId = coll[idx].id;
+    coll.splice(idx, 1);
+    idx = Math.max(0, idx - 1);
+    deleteFromDB(deletedId); // Remove from our database
+    render();
+    showToast('Disc removed');
+  }
+});
+
+// ── UPLOAD ──
+const addOv=document.getElementById('addOv');
+document.getElementById('openAdd').onclick=()=>addOv.classList.add('open');
+document.getElementById('openAdd2').onclick=()=>addOv.classList.add('open');
+document.getElementById('closeAdd').onclick=()=>addOv.classList.remove('open');
+addOv.onclick=e=>{if(e.target===addOv)addOv.classList.remove('open');};
+
+const dz=document.getElementById('dz'), fi=document.getElementById('fi');
+dz.onclick=()=>fi.click();
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0]?.type.startsWith('audio/'))load(e.dataTransfer.files[0]);});
+fi.onchange=e=>{if(e.target.files[0])load(e.target.files[0]);};
+
+function load(f){
+  pendingFile=f;
+  const n=f.name.replace(/\.[^/.]+$/,'').replace(/[-_]/g,' ');
+  document.getElementById('iTitle').value=n.slice(0,40);
+  document.getElementById('iArtist').value='';
+  document.getElementById('iQuote').value='';
+  dz.querySelector('.dz-icon').textContent='🎵';
+  dz.querySelector('.dz-text').textContent=f.name.slice(0,42);
+}
+
+document.getElementById('burnBtn').onclick=()=>{
+  if(!pendingFile){showToast('Please select an audio file first');return;}
+  const title=document.getElementById('iTitle').value.trim()||pendingFile.name;
+  const artist=document.getElementById('iArtist').value.trim()||'Unknown Artist';
+  const quote=document.getElementById('iQuote').value.trim();
+  addOv.classList.remove('open');
+  document.getElementById('burnOv').classList.add('on');
+  const reader=new FileReader();
+reader.onload=e=>{
+      setTimeout(()=>{
+        const newDisc = {id:Date.now(),title,artist,quote,colorIndex:selColor,data:e.target.result,added:new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})};
+        coll.push(newDisc);
+        idx=coll.length-1;
+        saveToDB(newDisc); // Save to our new database
+        render();      
+      document.getElementById('burnOv').classList.remove('on');
+      showToast('Disc added to your collection ✓');
+      pendingFile=null; fi.value='';
+      dz.querySelector('.dz-icon').textContent='💿';
+      dz.querySelector('.dz-text').textContent='Drop audio file here';
+    },2000);
+  };
+  reader.readAsDataURL(pendingFile);
+};
+
+// ── INDEXEDDB SETUP (Handles Large Audio Files) ──
+const initDB = new Promise((resolve) => {
+  const request = indexedDB.open("DVDVaultDB", 1);
+  request.onupgradeneeded = (e) => {
+    e.target.result.createObjectStore("discs", { keyPath: "id" });
+  };
+  request.onsuccess = (e) => {
+    db = e.target.result;
+    resolve();
+  };
+});
+
+function saveToDB(disc) {
+  db.transaction("discs", "readwrite").objectStore("discs").put(disc);
+}
+
+function deleteFromDB(id) {
+  db.transaction("discs", "readwrite").objectStore("discs").delete(id);
+}
+
+// Load saved discs when the site opens
+initDB.then(() => {
+  const request = db.transaction("discs", "readonly").objectStore("discs").getAll();
+  request.onsuccess = (e) => {
+    coll = e.target.result || [];
+    render(); // Show the loaded discs
+  };
+});
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.code==='Space'){e.preventDefault();togglePlay();}
+  if(e.code==='ArrowLeft')nav(-1);
+  if(e.code==='ArrowRight')nav(1);
+});
+
+let toastT;
+function showToast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3000); }
+
+// render() is now handled automatically when the database loads
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

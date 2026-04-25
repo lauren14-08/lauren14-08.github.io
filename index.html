@@ -120,7 +120,18 @@ html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',san
 
 .af4 { top:17%; right:11%; width:7%; height:26%; background:linear-gradient(135deg,#a878c8,#c8a0e8,#8050b0); }
 
+/* ── MUSEUM ROOM ── */
+.room { position:fixed; inset:0; overflow:hidden; }
 
+.room-bg {
+  position:absolute; inset:0;
+  background: url('james-butterly-nhM26kvIjhM-unsplash.jpg') center/cover no-repeat;
+}
+
+/* Hide the 3D museum parts so we can see the photo clearly */
+.floor, .back-wall, .beam, .spotlight, .wall-l, .wall-r, .art-frame {
+  display: none;
+}
 
 /* ── BROWSER CHROME ── */
 
@@ -919,11 +930,63 @@ document.getElementById('pbTrack').onclick=e=>{
 
 function fmt(s){ if(!s||isNaN(s))return'0:00'; return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); }
 
-// ── DELETE (long press more btn) ──
+// ── EDIT & DELETE (Three Dots Button) ──
 let delTimer;
+let isLongPress = false;
 const moreBtn = document.getElementById('moreBtn');
-moreBtn.addEventListener('pointerdown',()=>{ delTimer=setTimeout(()=>{ if(!coll.length)return; if(confirm('Remove "'+coll[idx].title+'" from collection?')){ if(playing){aud.pause();playing=false;} coll.splice(idx,1); idx=Math.max(0,idx-1); save(); render(); showToast('Disc removed'); } },700); });
-moreBtn.addEventListener('pointerup',()=>clearTimeout(delTimer));
+
+// Detect when you press down
+moreBtn.addEventListener('pointerdown', () => { 
+  isLongPress = false;
+  delTimer = setTimeout(() => { 
+    isLongPress = true; // If held for 600ms, it's a long press (Delete)
+    if(!coll.length) return; 
+    if(confirm('Remove "'+coll[idx].title+'" from collection?')) { 
+      if(playing){aud.pause();playing=false;document.getElementById('playBtn').textContent='▶';} 
+      const deletedId = coll[idx].id;
+      coll.splice(idx,1); 
+      idx=Math.max(0,idx-1); 
+      
+      // Save the deletion (handles both standard and IndexedDB versions)
+      if (typeof deleteFromDB === 'function') deleteFromDB(deletedId); else save();
+      
+      render(); 
+      showToast('Disc removed'); 
+    } 
+  }, 600); 
+});
+
+// Cancel the delete if your mouse leaves the button early
+moreBtn.addEventListener('pointerleave', () => clearTimeout(delTimer));
+
+// Detect when you let go
+moreBtn.addEventListener('pointerup', () => {
+  clearTimeout(delTimer);
+  
+  // If it was a quick click, open the edit prompts!
+  if (!isLongPress && coll.length > 0) {
+    const d = coll[idx];
+    
+    const newTitle = prompt("Edit Song Title:", d.title);
+    if (newTitle === null) return; // Cancels if you hit 'Cancel'
+    
+    const newArtist = prompt("Edit Artist:", d.artist);
+    if (newArtist === null) return;
+    
+    const newQuote = prompt("Edit Personal Note:", d.quote);
+    if (newQuote === null) return;
+
+    // Update the data with your new text
+    d.title = newTitle.trim() || d.title;
+    d.artist = newArtist.trim() || d.artist;
+    d.quote = newQuote.trim() || d.quote;
+
+    // Save the changes and refresh the screen
+    if (typeof saveToDB === 'function') saveToDB(d); else save();
+    render();
+    showToast('Disc updated!');
+  }
+});
 
 // ── TRASH CAN DELETE ──
 document.getElementById('deleteBtn').addEventListener('click', () => {

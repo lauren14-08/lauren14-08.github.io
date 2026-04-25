@@ -36,7 +36,7 @@
 
 
 
-html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',sans-serif; }
+html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',sans-serif; background-image: url('background.jpg'); background-size: cover; background-position: center; background-color: black;}
 
 
 
@@ -46,17 +46,6 @@ html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',san
 
 
 
-.room-bg {
-
-  position:absolute; inset:0;
-
-  background: linear-gradient(180deg,
-
-    #8a7b6e 0%, #9e8f82 10%, #b5a898 18%, #c2b5a8 100%
-
-  );
-
-}
 
 /* ── CALENDAR WIDGET ── */
 .calendar-widget {
@@ -121,79 +110,7 @@ html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',san
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* Floor */
 
-.floor {
-
-  position:absolute; bottom:0; left:0; right:0; height:28%;
-
-  background: linear-gradient(180deg, #a89880 0%, #96866e 60%, #8a7a64 100%);
-
-}
-
-
-
-/* Back wall center panel */
-
-.back-wall {
-
-  position:absolute; top:10%; left:18%; right:18%; bottom:28%;
-
-  background: linear-gradient(180deg,#cfc0b0 0%,#d8c9b8 40%,#c8b9a8 100%);
-
-}
-
-
-
-/* Ceiling beam */
-
-.beam {
-
-  position:absolute; top:0; left:50%; transform:translateX(-50%);
-
-  width:90px; height:12%;
-
-  background: linear-gradient(90deg,#786860,#9a8a7a,#7a6858);
-
-  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-
-}
-
-
-
-/* Spotlight */
-
-.spotlight {
-
-  position:absolute; top:12%; left:50%; transform:translateX(-50%);
-
-  width:500px; height:350px;
-
-  background: radial-gradient(ellipse at 50% 0%, rgba(255,248,220,0.22) 0%, transparent 65%);
-
-  pointer-events:none;
-
-}
-
-
-
-/* Side walls */
-
-.wall-l { position:absolute; top:0; left:0; bottom:0; width:20%; background:linear-gradient(90deg,#786858,#a09080); }
-
-.wall-r { position:absolute; top:0; right:0; bottom:0; width:20%; background:linear-gradient(270deg,#786858,#a09080); }
-
-
-
-/* Wall art frames */
-
-.art-frame {
-
-  position:absolute; border:3px solid #8a6838; border-radius:2px;
-
-  box-shadow: 0 4px 20px rgba(0,0,0,0.45), inset 0 0 20px rgba(0,0,0,0.12);
-
-}
 
 .af1 { top:20%; left:0.5%; width:10%; height:20%; background:linear-gradient(135deg,#c8d878,#e8f0b0,#a8b048); }
 
@@ -255,7 +172,16 @@ html, body { width:100%; height:100%; overflow:hidden; font-family:'DM Sans',san
 
 }
 
-
+/* ── DYNAMIC BACKGROUND ── */
+.room.custom-bg .floor,
+.room.custom-bg .back-wall,
+.room.custom-bg .beam,
+.room.custom-bg .spotlight,
+.room.custom-bg .wall-l,
+.room.custom-bg .wall-r,
+.room.custom-bg .art-frame {
+  display: none; /* Hides the museum elements */
+}
 
 /* ── SIDEBAR TOOLS ── */
 
@@ -675,27 +601,12 @@ audio,#fi { display:none; }
 </head>
 <body>
 
-<!-- Room -->
-<div class="room">
-  <div class="room-bg"></div>
-  <div class="floor"></div>
-  <div class="back-wall"></div>
-  <div class="beam"></div>
-  <div class="spotlight"></div>
-  <div class="wall-l"></div>
-  <div class="wall-r"></div>
-</div>
-
 <!-- Browser -->
 <div class="browser-bar">
-  <div class="bc-btn">⊞</div>
   <div class="bc-btn">‹</div>
   <div class="bc-btn">›</div>
-  <div class="bc-aa">AA</div>
   <div class="bc-url"><span style="font-size:10px;opacity:.55"></span>lauren14-08.github.io</div>
   <div class="bc-btn" id="openAdd">+</div>
-  <div class="bc-btn">↑</div>
-  <div class="bc-btn">⊡</div>
 </div>
 
 <!-- Sidebar -->
@@ -775,9 +686,9 @@ audio,#fi { display:none; }
       <div class="fw"><label class="fl">Title</label><input class="fi" id="iTitle" placeholder="Song title" maxlength="40"></div>
       <div class="fw"><label class="fl">Artist</label><input class="fi" id="iArtist" placeholder="Artist name" maxlength="30"></div>
     </div>
-    <div class="fw"><label class="fl">Personal note</label><input class="fi" id="iQuote" placeholder="What does this song mean to you?" maxlength="100"></div>
+    <div class="fw"><label class="fl">note</label><input class="fi" id="iQuote" placeholder="" maxlength="100"></div>
     <div class="clr-pick" id="clrPick"></div>
-    <button class="burn-btn" id="burnBtn">Burn to Disc</button>
+    <button class="burn-btn" id="burnBtn">Save as Disc!</button>
   </div>
 </div>
 
@@ -817,6 +728,7 @@ PALETTES.forEach((p,i) => {
   clrPick.appendChild(d);
 });
 
+
 // ── CALENDAR LOGIC ──
 function renderCalendar() {
   const grid = document.getElementById('calGrid');
@@ -855,13 +767,13 @@ renderCalendar();
 
 // ── BACKGROUND IMAGES ──
 const BG_IMAGES = [
-  'image_bfcfe2.png',
-  'image_bfcd3e.png',
-  'image_bfcd3c.png',
-  'image_bfcd39.png',
-  'image_bfcd36.png',
-  'image_bfccfe.png',
-  'image_bfccdd.png'
+  '1.jpg',
+  '2.jpg',
+  '3.jpg',
+  '4.jpg',
+  '5.png',
+  '6.png',
+  '7.png'
 ];
 
 // ── CANVAS ART ──
@@ -949,7 +861,7 @@ function renderFeatured() {
   drawArt(document.getElementById('cMain'),d.colorIndex||0,d.title,360,218);
   document.getElementById('fTitle').textContent=d.title;
   document.getElementById('fDate').textContent=d.added||'';
-  document.getElementById('fQuote').textContent=d.quote||'"A song is a snapshot of a feeling."';
+  document.getElementById('fQuote').textContent=d.quote||'"wow great song!!!!!!!"';
   document.getElementById('fMeta').textContent='Artist: '+d.artist;
   document.getElementById('avName').textContent=d.artist;
   document.getElementById('avSub').textContent=d.added||'Recently added';
@@ -1082,6 +994,56 @@ reader.onload=e=>{
   };
   reader.readAsDataURL(pendingFile);
 };
+
+// ── NAVIGATION ANIMATION ──
+let isNavigating = false;
+
+function nav(d) {
+  const ni = idx + d;
+  
+  // Stop if we hit the end of the list or are already animating
+  if (ni < 0 || ni >= coll.length || isNavigating) return;
+  
+  isNavigating = true;
+  
+  // Pause current audio
+  if (playing) { 
+    aud.pause(); 
+    playing = false; 
+    document.getElementById('playBtn').textContent = '▶'; 
+  }
+
+  const stage = document.querySelector('.carousel-stage');
+  
+  // 1. Smoothly fade and slide out
+  stage.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+  stage.style.opacity = '0';
+  stage.style.transform = d > 0 ? 'translateX(-40px)' : 'translateX(40px)';
+
+  setTimeout(() => {
+    // 2. Change the song and redraw canvases while invisible
+    idx = ni;
+    render();
+
+    // 3. Instantly move the carousel to the opposite side to prepare for entry
+    stage.style.transition = 'none';
+    stage.style.transform = d > 0 ? 'translateX(40px)' : 'translateX(-40px)';
+    
+    // Force the browser to register the new position before animating
+    void stage.offsetWidth; 
+
+    // 4. Smoothly slide and fade back into the center
+    stage.style.transition = 'opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1)';
+    stage.style.opacity = '1';
+    stage.style.transform = 'translateX(0)';
+
+    // Unlock navigation when the animation is done
+    setTimeout(() => {
+      isNavigating = false;
+    }, 250);
+
+  }, 200);
+}
 
 // ── INDEXEDDB SETUP (Handles Large Audio Files) ──
 const initDB = new Promise((resolve) => {
